@@ -8,7 +8,7 @@ services:
         - backend
     
   mongo:
-    image: mongo:3.0.2
+    image: mongo
     ports:
       - "27017:27017"
     networks:
@@ -16,10 +16,10 @@ services:
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=mongo
     #   - MONGO_INITDB_ROOT_PASSWORD=mongo
-    # volumes:
-    #   - mongodb:/data/db
+    volumes:
+      - mongodb:/data/db
 
 networks:
   backend:
-# volumes:
-#   mongodb:
+volumes:
+  mongodb:
