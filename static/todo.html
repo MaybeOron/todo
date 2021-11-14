@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="static/pico.min.css">
+<body style="margin-left:30px;margin-top:30px">
+    
+<div class="grid" data-theme="dark"  style="width:20%;">
+<form class="ui form" action="/new" method="post">
+    <label for="name" style="color:rgb(27, 40, 50);">todo title:</label>
+    <input type="text" id="name" name="name" placeholder="todo">
+
+    <label for="description" style="color:rgb(27, 40, 50);">todo description:</label>
+    <input type="description" id="description" name="description" placeholder="desc">
+
+    <input class="ui button" type="submit" class="contrast"></input>
+</form>
+
+</div>
+
+<table>
+    <thead>
+      <tr>
+        <th scope="col">Todo</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <th>{{ item.name }}</td>
+            <th>{{ item.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>

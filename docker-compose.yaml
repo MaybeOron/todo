@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+        - backend
+    
+  mongo:
+    image: mongo:3.0.2
+    ports:
+      - "27017:27017"
+    networks:
+        - backend
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=mongo
+    #   - MONGO_INITDB_ROOT_PASSWORD=mongo
+    # volumes:
+    #   - mongodb:/data/db
+
+networks:
+  backend:
+# volumes:
+#   mongodb:
