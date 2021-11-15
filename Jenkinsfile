@@ -117,6 +117,11 @@ environment {
 			}
 		}
 		stage('todo - publish to ECR - MASTER') {
+			when {
+                expression {
+					return env.BRANCH_NAME == 'master'
+                }
+            }   
 			steps {		            
                         withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
