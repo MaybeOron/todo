@@ -36,8 +36,8 @@ environment {
 					//}
 					sh """
 
-					// echo ${MAJOR_VER}.${HOTFIX_VER}
-					// exit()	
+					#echo ${MAJOR_VER}.${HOTFIX_VER}
+					#exit()	
 
 					echo "git prepare release"
                     git branch --all
