@@ -57,12 +57,6 @@ environment {
 					echo "~~~~~~~~TODO BUILD~~~~~~~~~DONE!"
 					"""	
 			}
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failVerify', state: 'failed'
-			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
-			// 	}
-			// }
 		}
 
 		stage('todo - build&package - RELEASE') {
@@ -84,12 +78,6 @@ environment {
 					echo "~~~~~~~~TODO BUILD~~~~~~~~~DONE!"
 					"""	
 			}
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failVerify', state: 'failed'
-			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
-			// 	}
-			// }
 		}
 
 		stage('TODO - e2e TEST ') {
@@ -140,13 +128,6 @@ environment {
 						"""	
 						}
 					}
-
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failPublish', state: 'failed'
-			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
-			// 	}
-			// }
 		}
 
 			stage('todo - publish to ECR - RELEASE') {
@@ -178,12 +159,6 @@ environment {
 						}
 					}
 
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failPublish', state: 'failed'
-			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
-			// 	}
-			// }
 		}
 		stage('todo - Clean Tag Push for releases') {
 			when {
@@ -198,16 +173,7 @@ environment {
 					git push --tags
 					"""		
 				}
-			}
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'build', state: 'failed'
-			// 	}
-			// 	success {
-			// 		updateGitlabCommitStatus name: 'build', state: 'success'
-			// 	}
-			// }
-			
+			}			
 		}
 	}
 }
