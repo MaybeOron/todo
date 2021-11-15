@@ -34,10 +34,10 @@ environment {
 					// HOTFIX_VER=sh(script: 'git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1', returnStdout: true).trim()
 					// HOTFIX_VER=sh(script: '\$((\$hotfix + 1))', returnStdout: true).trim()
 					//}
+					//	#echo ${MAJOR_VER}.${HOTFIX_VER}
+					//#exit()	
+					//
 					sh """
-
-					#echo ${MAJOR_VER}.${HOTFIX_VER}
-					#exit()	
 
 					echo "git prepare release"
                     git branch --all
