@@ -8,6 +8,7 @@ environment {
 		AWSID = credentials('awsid')
 		REPONAME = "oron_todo"
 		IMGTAG = "todo"
+		INSTANCE_IP = "3.123.228.93"
 	}
 	
 	stages {
@@ -29,12 +30,12 @@ environment {
                 }
             }       
 				steps {
-					sh """				
+					sh """
 					echo "git prepare release"
                     git branch --all
                     echo "~~~ on $env.BRANCH_NAME branch ~~~"				
 					majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )	
-                    hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                    hotfix=`git tag -l --sort=v:refname | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     hotfix=\$((\$hotfix + 1))
                     git tag "\$majorVer.\$hotfix"
 					"""	
@@ -75,7 +76,7 @@ environment {
 					echo "~~~~~~~~TODO BUILD~~~~~~~~~START"
 
 					majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
-                   	hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                   	hotfix=`git tag -l --sort=v:refname | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     Ver="\$majorVer.\$hotfix"
 
 					docker build -t todo:\$Ver -f Dockerfile .
@@ -98,20 +99,51 @@ environment {
             //     }
             // }     
 			steps {	
-					sh """		
-					
+					sh """						
 					echo "~~~~~~~~TODO E2E TEST~~~~~~~~~START~~~"				
 
-			
+					docker-compose up -d
+					sleep 15
+					curl ${INSTANCE_IP}:80
 
 					echo "~~~~~~~~TODO E2E TEST~~~~~~PASSED!~~~"
-					
-
 					"""	
 			}
+			post {
+				always {
+					sh """						
+					docker-compose down
+					"""	
+				}
+			}
+		}
+		stage('todo - publish to ECR - MASTER') {
+			when {
+                expression {
+					return env.BRANCH_NAME == 'master'
+                }
+            }   
+			steps {		            
+                        withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "aws",
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                        ]]) {       
+						sh """ 
+						sleep 1
+						aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWSID}.dkr.ecr.${REGION}.amazonaws.com
+						sleep 1
+						echo "pushing to ECR"
+						docker tag ${IMGTAG} ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:latest
+						docker push ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:latest
+						"""	
+						}
+					}
+
 			// post {
 			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failTest', state: 'failed'
+			// 		updateGitlabCommitStatus name: 'failPublish', state: 'failed'
 			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
 			// 	}
 			// }
@@ -159,7 +191,7 @@ environment {
 						sh """ 
 
 						majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
-                   		hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                   		hotfix=`git tag -l --sort=v:refname | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     	Ver="\$majorVer.\$hotfix"
 
 						sleep 1
