@@ -42,8 +42,6 @@ environment {
                     hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     hotfix=\$((\$hotfix + 1))
                     git tag "\$majorVer.\$hotfix"
-
-					mvn versions:set -DnewVersion=\$majorVer
 					"""	
 				// }
 			}
