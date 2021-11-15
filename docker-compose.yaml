@@ -18,12 +18,12 @@ services:
     ports:
       - "5000"
     depends_on:
-      - mongo
+      - mongodb
     networks:
         - backend
         - frontend
     
-  mongo:
+  mongodb:
     image: mongo:3.0.2
     ports:
       - "27017"
