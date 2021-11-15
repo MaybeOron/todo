@@ -8,6 +8,7 @@ environment {
 		AWSID = credentials('awsid')
 		REPONAME = "oron_todo"
 		IMGTAG = "todo"
+		INSTANCE_IP = "3.123.228.93"
 	}
 	
 	stages {
@@ -103,7 +104,7 @@ environment {
 
 					docker-compose up -d
 					sleep 15
-					curl 3.123.228.93:5000
+					curl ${INSTANCE_IP}:5000
 
 					echo "~~~~~~~~TODO E2E TEST~~~~~~PASSED!~~~"
 					"""	
