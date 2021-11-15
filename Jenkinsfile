@@ -1,7 +1,7 @@
 	pipeline {
-    tools {
-		terraform 'terraform'
-    }
+    // tools {
+	// 	// terraform 'terraform'
+    // }
 	agent any
 
 environment {
@@ -53,10 +53,7 @@ environment {
 					
 					echo "~~~~~~~~TODO E2E TEST~~~~~~~~~START~~~"				
 
-					// docker run -p 9191:9191 --network="thumbnailer_tn-innernet" --name="tedsearch" -d tedsearch:1.1-SNAPSHOT
-					// sleep 3
-
-					// ./e2e.sh tedsearch 9191
+			
 
 					echo "~~~~~~~~TODO E2E TEST~~~~~~PASSED!~~~"
 					
