@@ -43,7 +43,7 @@ environment {
                     git branch --all
                     echo "~~~ on $env.BRANCH_NAME branch ~~~"				
 					majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )	
-                    hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                    hotfix=`git tag -l --sort=v:refname | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     hotfix=\$((\$hotfix + 1))
                     git tag "\$majorVer.\$hotfix"
 					"""	
@@ -84,7 +84,7 @@ environment {
 					echo "~~~~~~~~TODO BUILD~~~~~~~~~START"
 
 					majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
-                   	hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                   	hotfix=`git tag -l --sort=v:refname | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     Ver="\$majorVer.\$hotfix"
 
 					docker build -t todo:\$Ver -f Dockerfile .
@@ -168,7 +168,7 @@ environment {
 						sh """ 
 
 						majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
-                   		hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                   		hotfix=`git tag -l --sort=v:refname | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
                     	Ver="\$majorVer.\$hotfix"
 
 						sleep 1
