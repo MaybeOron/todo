@@ -1,7 +1,7 @@
 	pipeline {
-    tools {
-		// terraform 'terraform'
-    }
+    // tools {
+	// 	// terraform 'terraform'
+    // }
 	agent any
 
 environment {
