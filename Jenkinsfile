@@ -29,16 +29,7 @@ environment {
                 }
             }       
 				steps {
-					// script{		
-					// MAJOR_VER=sh(script: 'echo ${BRANCH_NAME} | grep -Pow [0-9]*.[0-9]* ', returnStdout: true).trim()
-					// HOTFIX_VER=sh(script: 'git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1', returnStdout: true).trim()
-					// HOTFIX_VER=sh(script: '\$((\$hotfix + 1))', returnStdout: true).trim()
-					//}
-					//	#echo ${MAJOR_VER}.${HOTFIX_VER}
-					//#exit()	
-					//
 					sh """
-
 					echo "git prepare release"
                     git branch --all
                     echo "~~~ on $env.BRANCH_NAME branch ~~~"				
@@ -107,23 +98,23 @@ environment {
             //     }
             // }     
 			steps {	
-					sh """		
-					
+					sh """						
 					echo "~~~~~~~~TODO E2E TEST~~~~~~~~~START~~~"				
 
-			
+					docker-compose up -d
+					sleep 15
+					curl 3.123.228.93:5000
 
 					echo "~~~~~~~~TODO E2E TEST~~~~~~PASSED!~~~"
-					
-
 					"""	
 			}
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failTest', state: 'failed'
-			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
-			// 	}
-			// }
+			post {
+				always {
+					sh """						
+					docker-compose down
+					"""	
+				}
+			}
 		}
 		stage('todo - publish to ECR - MASTER') {
 			steps {		            
