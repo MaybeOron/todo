@@ -30,7 +30,7 @@ environment {
             }       
 				steps {
 					script{		
-					MAJOR_VER=sh(script: 'echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* ', returnStdout: true).trim()
+					MAJOR_VER=sh(script: 'echo ${BRANCH_NAME} | grep -Pow [0-9]*.[0-9]* ', returnStdout: true).trim()
 					HOTFIX_VER=sh(script: 'git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1', returnStdout: true).trim()
 					HOTFIX_VER=sh(script: '\$((\$hotfix + 1))', returnStdout: true).trim()
 
