@@ -143,7 +143,12 @@ environment {
 			// }
 		}
 
-			stage('todo - publish to ECR - RELEASE') { 
+			stage('todo - publish to ECR - RELEASE') {
+			when {
+                expression {
+                    return env.BRANCH_NAME ==~ /release\/\d+\.\d+/
+            }
+            }   
 			steps {		            
                         withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
