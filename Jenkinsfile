@@ -122,6 +122,30 @@ environment {
 			// 	}
 			// }
 		}
+		stage('todo - Clean Tag Push for releases') {
+			when {
+                expression {
+                    return env.BRANCH_NAME ==~ /release\/\d+\.\d+/
+                }
+            }   
+			steps {
+				// withCredentials([gitUsernamePassword(credentialsId: 'gitcred', gitToolName: 'git-tool')]) {
+					sh """ 		
+					echo "~~~pushing tags~~~"
+					git push --tags
+					"""		
+				// }
+			}
+			// post {
+			// 	failure {
+			// 		updateGitlabCommitStatus name: 'build', state: 'failed'
+			// 	}
+			// 	success {
+			// 		updateGitlabCommitStatus name: 'build', state: 'success'
+			// 	}
+			// }
+			
+		}
 		
 		// stage('tedsearch - DEPLOY TEST ENV') {
 		// 	when {
