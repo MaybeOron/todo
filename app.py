@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__, template_folder='static')
 
-client = MongoClient("mongodb://mongodb:27017/tododb")
+client = MongoClient("mongodb://root:root@mongodb:27017/admin")
 db = client['tododb']
 todo = db['tododb']
 #db = client.tododb
