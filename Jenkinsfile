@@ -24,6 +24,31 @@ environment {
 			}
 		}
 
+			stage('todo - git') {
+			 when {
+                expression {
+                    return env.BRANCH_NAME ==~ /release\/\d+\.\d+/
+                }
+            }       
+				steps {
+					// withCredentials([gitUsernamePassword(credentialsId: 'gitcred', gitToolName: 'git-tool')]) {
+					sh """				
+					echo "git prepare release"
+                    git branch --all
+                    echo "~~~ on $env.BRANCH_NAME branch ~~~"
+				
+					majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
+		
+                    hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                    hotfix=\$((\$hotfix + 1))
+                    git tag "\$majorVer.\$hotfix"
+
+					mvn versions:set -DnewVersion=\$majorVer
+					"""	
+				// }
+			}
+		}
+
 		stage('todo - build&package') {
 			steps {					
 					sh """			
