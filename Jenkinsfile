@@ -138,12 +138,12 @@ environment {
                 }
             }   
 			steps {
-				// withCredentials([gitUsernamePassword(credentialsId: 'gitcred', gitToolName: 'git-tool')]) {
+				withCredentials([gitUsernamePassword(credentialsId: 'githubtoken', gitToolName: 'Default')]) {
 					sh """ 		
 					echo "~~~pushing tags~~~"
 					git push --tags
 					"""		
-				// }
+				}
 			}
 			// post {
 			// 	failure {
