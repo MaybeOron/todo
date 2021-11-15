@@ -29,7 +29,18 @@ environment {
                 }
             }       
 				steps {
-					sh """				
+					script{		
+					MAJOR_VER=sh(script: 'echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* ', returnStdout: true).trim()
+					HOTFIX_VER=sh(script: 'git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1', returnStdout: true).trim()
+					HOTFIX_VER=sh(script: '\$((\$hotfix + 1))', returnStdout: true).trim()
+
+				}
+					sh """
+
+					echo ${MAJOR_VER}.${HOTFIX_VER}
+
+
+					exit()	
 					echo "git prepare release"
                     git branch --all
                     echo "~~~ on $env.BRANCH_NAME branch ~~~"				
