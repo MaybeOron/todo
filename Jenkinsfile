@@ -105,12 +105,17 @@ environment {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {       
 						sh """ 
+
+						majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
+                   		hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                    	Ver="\$majorVer.\$hotfix"
+
 						sleep 1
 						aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWSID}.dkr.ecr.${REGION}.amazonaws.com
 						sleep 1
 						echo "pushing to ECR"
-						docker tag ${IMGTAG} ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:1.0
-						docker push ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:1.0
+						docker tag ${IMGTAG}:\$Ver ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:\$Ver
+						docker push ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:\$Ver
 						"""	
 						}
 					}
