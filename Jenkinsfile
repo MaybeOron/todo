@@ -104,7 +104,7 @@ environment {
 
 					docker-compose up -d
 					sleep 15
-					curl ${INSTANCE_IP}:5000
+					curl ${INSTANCE_IP}:80
 
 					echo "~~~~~~~~TODO E2E TEST~~~~~~PASSED!~~~"
 					"""	
