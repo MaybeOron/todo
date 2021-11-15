@@ -50,9 +50,13 @@ environment {
 		stage('todo - build&package') {
 			steps {					
 					sh """			
-					echo "~~~~~~~~TODO BUILD~~~~~~~~~START"	
+					echo "~~~~~~~~TODO BUILD~~~~~~~~~START"
 
-					docker build -t todo -f Dockerfile .
+					majorVer=\$( echo $env.BRANCH_NAME | grep -Pow [0-9]*.[0-9]* )
+                   	hotfix=`git tag | grep \$majorVer | tail -1 | grep -ow [0-9]* | tail -1 | grep . || echo -1`
+                    Ver="\$majorVer.\$hotfix"
+
+					docker build -t todo:\$Ver -f Dockerfile .
 					
 					echo "~~~~~~~~TODO BUILD~~~~~~~~~DONE!"
 					"""	
