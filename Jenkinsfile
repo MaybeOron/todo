@@ -148,32 +148,6 @@ environment {
 			// 	}
 			// }
 		}
-		stage('todo - publish to ECR - MASTER') {
-			steps {		            
-                        withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws",
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                        ]]) {       
-						sh """ 
-						sleep 1
-						aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWSID}.dkr.ecr.${REGION}.amazonaws.com
-						sleep 1
-						echo "pushing to ECR"
-						docker tag ${IMGTAG} ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:latest
-						docker push ${AWSID}.dkr.ecr.${REGION}.amazonaws.com/${REPONAME}:latest
-						"""	
-						}
-					}
-
-			// post {
-			// 	failure {
-			// 		updateGitlabCommitStatus name: 'failPublish', state: 'failed'
-			// 		emailext body: 'tedsearch failed.', subject: 'tedsearch pipeline results - FAILED!', to: 'oronboy100@gmail.com'
-			// 	}
-			// }
-		}
 
 			stage('todo - publish to ECR - RELEASE') {
 			when {
