@@ -3,10 +3,16 @@ from flask_pymongo import PyMongo
 import os
 from pymongo import MongoClient
 #from bson import ObjectId
+from dotenv import load_dotenv
+load_dotenv()
+global database_url
+
+database_url = os.environ.get('MONGODBURL')
 
 app = Flask(__name__, template_folder='static')
 
-client = MongoClient("mongodb://root:root@mongodb:27017/admin")
+#client = MongoClient("mongodb://root:root@mongodb:27017/admin")
+client = MongoClient(database_url)
 db = client['tododb']
 todo = db['tododb']
 #db = client.tododb
