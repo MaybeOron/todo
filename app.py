@@ -3,6 +3,7 @@ from flask_pymongo import PyMongo
 import os
 from pymongo import MongoClient
 #from bson import ObjectId
+import logging, sys, json_logging
 from dotenv import load_dotenv
 load_dotenv()
 global database_url
@@ -10,6 +11,11 @@ global database_url
 database_url = os.environ.get('MONGODBURL')
 
 app = Flask(__name__, template_folder='static')
+json_logging.init_flask(enable_json=True)
+json_logging.init_request_instrument(app)
+logger = logging.getLogger("test-logger")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler(sys.stdout))
 
 #client = MongoClient("mongodb://root:root@mongodb:27017/admin")
 client = MongoClient(database_url)
@@ -39,6 +45,9 @@ def new():
         'description':request.form['description']
     }
     db.tododb.insert_one(item_doc)
+    logger.info("test log statement")
+    logger.info(item_doc)
+    
     return redirect(url_for('todo'))
 
 # #@app.route("/delete/<name>", methods=["DELETE"])
@@ -57,4 +66,4 @@ def new():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
