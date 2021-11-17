@@ -17,14 +17,10 @@ logger = logging.getLogger("test-logger")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
-#client = MongoClient("mongodb://root:root@mongodb:27017/admin")
+
 client = MongoClient(database_url)
 db = client['tododb']
 todo = db['tododb']
-#db = client.tododb
-#app.config["MONGO_URI"] = "mongodb://mongo:mongo@mongo:27017/tododb"
-#mongo = PyMongo(app)
-#db = mongo.db
 
 @app.route('/favicon.ico')
 def favicon():
@@ -46,7 +42,7 @@ def new():
     }
     db.tododb.insert_one(item_doc)
     logger.info("test log statement")
-    logger.info(item_doc)
+    logger.info("Todo data", { "todo_details" : {"todo" : item_doc['name'],"description" : item_doc['description'] } } )
     
     return redirect(url_for('todo'))
 
