@@ -42,7 +42,7 @@ def new():
     }
     db.tododb.insert_one(item_doc)
     logger.info("test log statement")
-    logger.info("Todo data", { "todo_details" : {"todo" : item_doc['name'],"description" : item_doc['description'] } } )
+    logger.info({ "todo_details" : {"todo" : item_doc['name'],"description" : item_doc['description'] } } )
     
     return redirect(url_for('todo'))
 
