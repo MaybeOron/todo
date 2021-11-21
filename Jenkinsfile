@@ -5,10 +5,10 @@
 environment {
 		REGION = "eu-central-1"
 		AWSPUT = "json"
-		AWSID = credentials('awsid')
+		AWSID = credentials('awsid2')
 		REPONAME = "oron_todo"
 		IMGTAG = "todo"
-		INSTANCE_IP = "3.123.228.93"
+		INSTANCE_IP = "3.122.177.201"
 	}
 	
 	stages {
@@ -114,7 +114,7 @@ environment {
 			steps {		            
                         withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws",
+                        credentialsId: "aws2",
                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {       
@@ -139,7 +139,7 @@ environment {
 			steps {		            
                         withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws",
+                        credentialsId: "aws2",
                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {       
